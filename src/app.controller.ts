@@ -17,11 +17,11 @@ export class AppController {
 
   @Get('/test/workflow')
   async testWorkflow() {
-    const job: JobData<{ orderId: string; paymentRetried?: boolean }> = {
+    const job: JobData<{ userId: string; userName: string }> = {
       correlationId: 'corr-123',
-      payload: { orderId: 'ORD-1' },
+      payload: { userId: 'USR-123', userName: 'John Doe' },
       meta: {
-        jobName: 'orders.process',
+        jobName: 'employee.create',
         version: 1,
         runId: crypto.randomUUID(),
         attempt: 0,

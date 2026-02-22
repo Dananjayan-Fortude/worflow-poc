@@ -17,7 +17,7 @@ export class EmployeeService {
     private readonly employeeWorkFlow: EmployeeCreateWorkflow,
   ) {}
 
-  async runOnce(job: JobData<{ orderId: string; paymentRetried?: boolean }>) {
+  async runOnce(job: JobData<{ userId: string; userName: string }>) {
     let updated: any;
     const existing = await this.workflowModel.findOne({
       correlationId: job.correlationId,

@@ -3,14 +3,14 @@ import { WorkflowRegistry } from '../../workflow/core/workflow.registry';
 import { WorkFlowGenerator } from '../../workflow/core/base-workflow';
 import { JobData } from '../../workflow/core/workflow.types';
 
-type ProcessOrderBody = { orderId: string; paymentRetried?: boolean };
+type ProcessOrderBody = { userId: string; userName: string };
 
 @Injectable()
 export class EmployeeCreateWorkflow
   extends WorkFlowGenerator<JobData<ProcessOrderBody>>
   implements OnModuleInit
 {
-  readonly workflowName = 'orders.process';
+  readonly workflowName = 'employee.create';
   readonly version = 1;
 
   constructor(private readonly registry: WorkflowRegistry) {
@@ -27,22 +27,22 @@ export class EmployeeCreateWorkflow
         name: 'validate',
         shouldRun: (job) => true, // can be dynamic based on job.payload or external factors
         run: async (job) => {
-          if (!job.payload.orderId) throw new Error('orderId missing');
+          if (!job.payload.userId) throw new Error('userId missing');
+          if (!job.payload.userName) throw new Error('userName missing');
         },
       },
       {
-        name: 'charge-payment',
-        shouldRun: (job) => job.payload.paymentRetried !== true,
+        name: 'check-eligibility',
+        shouldRun: (job) => (job.meta.attempt === 0), // skip this step for now
         run: async (job) => {
-          // fail first time, succeed next retry
-          if (!job.payload.paymentRetried) {
-            job.payload.paymentRetried = true;
-            throw new Error('Payment gateway timeout');
+          // call external service to check if user is eligible for employee creation
+          if (job.meta.attempt === 0) {
+            throw new Error('Simulated failure at check-eligibility step');
           }
-        },
+        }, 
       },
       {
-        name: 'send-confirmation',
+        name: 'create-employee',
         run: async () => {
           // send email / event
         },
