@@ -29,7 +29,6 @@ export class AppController {
         steps: [], // empty => will be initialized automatically
       },
     };
-    await this.employeeService.runOnce(job);
-    return { message: 'Workflow executed successfully' };
+    return await this.employeeService.runOnce(job);
   }
 }

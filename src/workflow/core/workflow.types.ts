@@ -16,7 +16,6 @@ export interface JobMeta {
   maxAttempts?: number;
   steps: JobStepState[];
 }
-
 export interface JobData<TBody = any> {
   correlationId: string;   // trace across retries
   payload: TBody;

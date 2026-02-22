@@ -1,7 +1,7 @@
 import { JobData, JobStepState } from "./workflow.types";
 import { WorkflowStep } from "./steps.interface";
 
-export abstract class InitializeWorkFlow<TJob extends JobData = JobData> {
+export abstract class WorkFlowGenerator<TJob extends JobData = JobData> {
   abstract readonly workflowName: string;
   abstract readonly version: number;
   protected abstract steps(): WorkflowStep<TJob>[];
@@ -14,7 +14,7 @@ export abstract class InitializeWorkFlow<TJob extends JobData = JobData> {
         version: this.version,
         runId: crypto.randomUUID(),
         attempt: 0,
-        maxAttempts: 5,
+        maxAttempts: 10,
         steps: [],
       };
     }
@@ -22,7 +22,7 @@ export abstract class InitializeWorkFlow<TJob extends JobData = JobData> {
     // keep jobName/version consistent
     job.meta.jobName = this.workflowName;
     job.meta.version = this.version;
-    job.meta.maxAttempts ??= 5;
+    job.meta.maxAttempts ??= 10;
 
     // initialize steps if empty
     if (!job.meta.steps || job.meta.steps.length === 0) {
@@ -81,6 +81,6 @@ export abstract class InitializeWorkFlow<TJob extends JobData = JobData> {
   }
 
   exceededMaxAttempts(job: TJob): boolean {
-    return job.meta.attempt >= (job.meta.maxAttempts ?? 5);
+    return job.meta.attempt >= (job.meta.maxAttempts ?? 10);
   }
 }
