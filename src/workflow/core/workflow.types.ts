@@ -19,6 +19,6 @@ export interface JobMeta {
 
 export interface JobData<TBody = any> {
   correlationId: string;   // trace across retries
-  body: TBody;
+  payload: TBody;
   meta: JobMeta;
 }

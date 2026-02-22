@@ -5,11 +5,11 @@ import { InitializeWorkFlow } from './base-workflow';
 export class WorkflowRegistry {
   private readonly map = new Map<string, InitializeWorkFlow<any>>();
 
-  register(workflow: InitializeWorkFlow<any>) {
+  register(workflow: InitializeWorkFlow) {
     this.map.set(workflow.workflowName, workflow);
   }
 
-  get(workflowName: string): InitializeWorkFlow<any> {
+  get(workflowName: string): InitializeWorkFlow {
     const wf = this.map.get(workflowName);
     if (!wf) throw new Error(`Workflow not registered: ${workflowName}`);
     return wf;
