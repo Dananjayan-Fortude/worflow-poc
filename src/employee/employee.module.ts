@@ -6,7 +6,7 @@ import { WorkFlowSchema } from '../workflow/core/document-db.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'WorkFlow', schema: WorkFlowSchema }]),
+    // MongooseModule.forFeature([{ name: 'WorkFlow', schema: WorkFlowSchema }]),
   ],
   providers: [EmployeeService,EmployeeCreateWorkflow],
   exports: [EmployeeService],

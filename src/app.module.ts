@@ -10,8 +10,8 @@ import { WorkFlowSchema } from './workflow/core/document-db.schema';
   imports: [
     WorkflowModule,
     EmployeeModule,
-    MongooseModule.forRoot('mongodb://localhost:27017'),
-    MongooseModule.forFeature([{ name: 'WorkFlow', schema: WorkFlowSchema }]),
+    // MongooseModule.forRoot('mongodb://localhost:27017'),
+    // MongooseModule.forFeature([{ name: 'WorkFlow', schema: WorkFlowSchema }]),
   ],
   controllers: [AppController],
   providers: [AppService],

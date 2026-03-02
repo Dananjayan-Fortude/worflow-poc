@@ -1,0 +1,44 @@
+# Node modules (reinstalled in container)
+node_modules
+
+# Build outputs
+dist
+build
+
+# Environment files (sensitive data)
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log
+yarn-debug.log
+pnpm-debug.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Git and version control
+.git
+.gitignore
+
+# Docker artifacts
+Dockerfile
+.dockerignore
+
+# Test coverage and test files
+coverage
+*.spec.ts
+*.test.ts
+__tests__/
+
+# Editor and IDE settings
+.vscode
+.idea
+*.sw?
+
+# Misc
+*.tgz
+*.lock-wscript

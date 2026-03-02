@@ -25,21 +25,32 @@ export class EmployeeCreateWorkflow
     return [
       {
         name: 'validate',
-        shouldRun: (job) => true, // can be dynamic based on job.payload or external factors
         run: async (job) => {
           if (!job.payload.userId) throw new Error('userId missing');
           if (!job.payload.userName) throw new Error('userName missing');
+
+          // compute something step 2 needs
+          job.meta.context ??= {};
+          job.meta.context.normalizedUserName = {
+            name: job.payload.userName.trim().toLowerCase(),
+            timestamp: new Date().toISOString(),
+          }
         },
       },
       {
         name: 'check-eligibility',
-        shouldRun: (job) => (job.meta.attempt === 0), // skip this step for now
+        shouldRun: (job) => true,
         run: async (job) => {
-          // call external service to check if user is eligible for employee creation
-          if (job.meta.attempt === 0) {
-            throw new Error('Simulated failure at check-eligibility step');
+          const normalized = job.meta.context?.normalizedUserName;
+          if (!normalized) {
+            // This should not happen if step 1 was DONE, but guard anyway
+            throw new Error('Missing normalizedUserName from validate step');
           }
-        }, 
+
+          // use normalized in external call
+          // const res = await eligibilityApi.check({ userId: job.payload.userId, name: normalized });
+          // job.meta.context.eligibility = res;
+        },
       },
       {
         name: 'create-employee',
